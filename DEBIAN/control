@@ -5,7 +5,6 @@ Homepage: github.com/darkfrank-it/sddm-bing-pod
 Maintainer: github.com/darkfrank-it/sddm-bing-pod
 Package: sddm-bing-pod
 Priority: optional
-Section: devel
-Version: 1.0.0
-Installed-Size: 4
+Section: Utility
+Version: 1.0.1
 

@@ -63,8 +63,8 @@ BACK_PID=$!
 wait $BACK_PID
 
 # Set the sddm wallpaper
-cp -f $saveDir$picName /usr/share/sddm/themes/lubuntu/wall.png
-convert -font helvetica -fill "rgba(255,255,255,0.80)" -pointsize 30 -draw "text 1300,80 '$picDesc'" /usr/share/sddm/themes/lubuntu/wall.png /usr/share/sddm/themes/lubuntu/wall.png
+cp -f $saveDir$picName /tmp/wall.png
+convert -font helvetica -fill "rgba(255,255,255,0.80)" -pointsize 30 -draw "gravity SouthEast text 30,50 '$picDesc'" /tmp/wall.png /usr/share/sddm/themes/lubuntu/wall.png
 
 # Remove pictures older than 7 days
 find $saveDir -atime 7 -delete
