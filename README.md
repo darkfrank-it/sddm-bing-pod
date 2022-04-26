@@ -25,3 +25,7 @@ sudo apt-get remove sddm-bing-pod
 
 Then you need to download original wall.png and copy to /usr/share/sddm/themes/lubuntu/wall.png with root permission.
 The file must be owned by root to.
+
+## TODO
+- Don't download picture if it is already present
+- Add a configuration file to set language (or maybe i can get it by read system default?) or disable copyright text and resolution
