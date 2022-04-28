@@ -15,59 +15,90 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 # ImageMagick is needed to draw copyright string to picture
+# It can be disabled (so ImageMagick is not needed) by putting picCopyright to false
 # identify | head -1
 
 # $bing is needed to form the fully qualified URL for
 # the Bing pic of the day
 bing="www.bing.com"
 
-# $xmlURL is needed to get the xml data from which
-# the relative URL for the Bing pic of the day is extracted
+# Set default values
 #
 # The mkt parameter determines which Bing market you would like to
 # obtain your images from.
-# Valid values are: en-US, zh-CN, ja-JP, en-AU, en-UK, de-DE, en-NZ, en-CA.
-#
-# The idx parameter determines where to start from. 0 is the current day,
-# 1 the previous day, etc.
-xmlURL="http://www.bing.com/HPImageArchive.aspx?format=xml&idx=0&n=1&mkt=it-IT"
+# Valid values are: en-US, zh-CN, ja-JP, en-AU, en-UK, de-DE, en-NZ, en-CA, it-IT.
+mktValue=$(echo $LANG | cut -d "." -f 1 | tr _ -)
 
 # $saveDir is used to set the location where Bing pics of the day
 # are stored. $HOME holds the path of the current user's home directory
-saveDir='/usr/local/share/'
+# The images will be saved in  $saveDir
+saveDir='/usr/local/share/sddm-bing-pod/'
+
+# The desired Bing picture resolution to download
+# Valid options: "_1024x768" "_1280x720" "_1366x768" "_1920x1080"
+picRes="_1920x1080"
+
+# The desired size of overlay text
+# Recommend options: "24" "26" "28" "30"
+pointSize="30"
+
+# The file extension for the Bing pic
+picExt=".jpg"
+
+# Print to image the copyright information that describe the image
+# Valid options: "true", "false"
+picCopyright=true
+
+# Remove picture older than $picRemoveOld located into $saveDir
+# Valid options: "-1": never remove, "1" remove 1 day old picture, "2" remove 2 day old picture and so on 
+picRemoveOld=7
+
+# The location of settings file
+appConfDir=/etc/sddm-bing-pod/
+if [ -f ${appConfDir}settings ] ; then
+  . ${appConfDir}settings
+fi
+
+# $xmlURL is needed to get the xml data from which
+# the relative URL for the Bing pic of the day is extracted
+# The idx parameter determines where to start from. 0 is the current day,
+# 1 the previous day, etc.
+xmlURL="http://www.bing.com/HPImageArchive.aspx?format=xml&idx=0&n=1&mkt=$mktValue"
 
 # Create saveDir if it does not already exist
 mkdir -p $saveDir
-
-# The desired Bing picture resolution to download
-# Valid options: "_1024x768" "_1280x720" "_1366x768" "_1920x1200"
-#picRes="_1920x1200"
-
-# The file extension for the Bing pic
-#picExt=".jpg"
 
 # Extract the relative URL of the Bing pic of the day from
 # the XML data retrieved from xmlURL, form the fully qualified
 # URL for the pic of the day, and store it in $picURL
 xmlFile=$(curl -s $xmlURL)
-#picURL=$bing$(echo $xmlFile | grep -oP "<urlBase>(.*)</urlBase>" | cut -d ">" -f 2 | cut -d "<" -f 1)$picRes$picExt
-picURL=$bing$(echo $xmlFile | grep -oP "<url>(.*)</url>" | cut -d ">" -f 2 | cut -d "<" -f 1)
-picDesc=$(echo $xmlFile | grep -oP "<copyright>(.*)</copyright>" | cut -d ">" -f 2 | cut -d "<" -f 1)
+picURL=$bing$(echo $xmlFile | grep -oP "<urlBase>(.*)</urlBase>" | cut -d ">" -f 2 | cut -d "<" -f 1)$picRes$picExt
+# picURL=$bing$(echo $xmlFile | grep -oP "<url>(.*)</url>" | cut -d ">" -f 2 | cut -d "<" -f 1)
 
 # $picName contains the filename of the Bing pic of the day
 picName=$(echo $picURL | cut -d "=" -f 2 | cut -d "&" -f 1)
 
 # Download the Bing pic of the day
-curl --create-dirs -s -o $saveDir$picName $picURL
-BACK_PID=$!
-wait $BACK_PID
+if [ ! -f $saveDir$picName ] ; then
+  curl --create-dirs -s -o $saveDir$picName $picURL
+  BACK_PID=$!
+  wait $BACK_PID
+fi
 
 # Set the sddm wallpaper
-cp -f $saveDir$picName /tmp/wall.png
-convert -font helvetica -fill "rgba(255,255,255,0.80)" -pointsize 30 -draw "gravity SouthEast text 30,50 '$picDesc'" /tmp/wall.png /usr/share/sddm/themes/lubuntu/wall.png
+if [ "$picCopyright" = true ] ; then
+  picDesc=$(echo $xmlFile | grep -oP "<copyright>(.*)</copyright>" | cut -d ">" -f 2 | cut -d "<" -f 1)
+  mkdir -p /tmp/sddm-bing-pod/
+  cp -f $saveDir$picName /tmp/sddm-bing-pod/wall.png
+  convert -font helvetica -fill "rgba(255,255,255,0.80)" -pointsize $pointSize -draw "gravity SouthEast text 30,50 '$picDesc'" /tmp/sddm-bing-pod/wall.png /usr/share/sddm/themes/lubuntu/wall.png
+else
+  cp -f $saveDir$picName /usr/share/sddm/themes/lubuntu/wall.png
+fi
 
 # Remove pictures older than 7 days
-find $saveDir -atime 7 -delete
+if [ "$picRemoveOld" != "-1" ] ; then
+  find $saveDir -atime $picRemoveOld -delete
+fi
 
 # Exit the script
 exit

@@ -1,0 +1,27 @@
+#! /bin/bash
+
+# The mkt parameter determines which Bing market you would like to
+# obtain your images from.
+# Valid values are: en-US, zh-CN, ja-JP, en-AU, en-UK, de-DE, en-NZ, en-CA, it-IT.
+# mktValue=en-US
+
+# $saveDir is used to set the location where Bing pics of the day
+# are stored. $HOME holds the path of the current user's home directory
+# The images will be saved in  $saveDir
+# saveDir='/usr/local/share/sddm-bing-pod/'
+
+# The desired Bing picture resolution to download
+# Valid options: "_1024x768" "_1280x720" "_1366x768" "_1920x1080"
+# picRes="_1920x1080"
+
+# The desired size of overlay text
+# Recommend options: "24" "26" "28" "30"
+# pointSize="30"
+
+# Print to image the copyright information that describe the image
+# Valid options: "true", "false"
+# picCopyright=true
+
+# Remove picture older than $picRemoveOld located into $saveDir
+# Valid options: "-1": never remove, "1" remove 1 day old picture, "2" remove 2 day old picture and so on 
+# picRemoveOld=7
