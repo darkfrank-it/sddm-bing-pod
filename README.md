@@ -34,9 +34,8 @@ Available configuration with example:
 `picRes="_1920x1080"`
 
 > The desired size of overlay text
-> Recommend options: "24" "26" "28" "30"
-
-`pointSize="30"`
+> Recommend options: "22" "24" "26" "28"
+`pointSize="28"`
 
 > Print to image the copyright information that describe the image
 > Valid options: "true", "false"
