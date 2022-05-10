@@ -66,7 +66,7 @@ fi
 xmlURL="http://www.bing.com/HPImageArchive.aspx?format=xml&idx=0&n=1&mkt=$mktValue"
 
 # Create saveDir if it does not already exist
-mkdir -p $saveDir
+# mkdir -p $saveDir
 
 # Extract the relative URL of the Bing pic of the day from
 # the XML data retrieved from xmlURL, form the fully qualified
@@ -80,22 +80,21 @@ picName=$(echo $picURL | cut -d "=" -f 2 | cut -d "&" -f 1)
 
 # Download the Bing pic of the day
 if [ ! -f $saveDir$picName ] ; then
-  curl --create-dirs -s -o $saveDir$picName $picURL
-  BACK_PID=$!
-  wait $BACK_PID
-fi
-
-# Set the sddm wallpaper
-cp -f $saveDir$picName /usr/share/sddm/themes/lubuntu/wall.png
-if [ "$picCopyright" = true ] ; then
-  picDesc=$(echo $xmlFile | grep -oP "<copyright>(.*)</copyright>" | cut -d ">" -f 2 | cut -d "<" -f 1)
-  convert -font helvetica -fill "rgba(255,255,255,0.80)" -pointsize $pointSize -draw "gravity SouthEast text 30,50 '$picDesc'" /usr/share/sddm/themes/lubuntu/wall.png /tmp/wall.png
-  mv -f /tmp/wall.png /usr/share/sddm/themes/lubuntu/wall.png
+    curl --create-dirs -s -o $saveDir$picName $picURL
+    BACK_PID=$!
+    wait $BACK_PID
+    # Set the sddm wallpaper
+    cp -f $saveDir$picName /usr/share/sddm/themes/lubuntu/wall.png
+    if [ "$picCopyright" = true ] ; then
+        picDesc=$(echo $xmlFile | grep -oP "<copyright>(.*)</copyright>" | cut -d ">" -f 2 | cut -d "<" -f 1)
+        convert -font helvetica -fill "rgba(255,255,255,0.80)" -pointsize $pointSize -draw "gravity SouthEast text 30,50 '$picDesc'" /usr/share/sddm/themes/lubuntu/wall.png /tmp/wall.png
+        mv -f /tmp/wall.png /usr/share/sddm/themes/lubuntu/wall.png
+    fi
 fi
 
 # Remove pictures older than 7 days
 if [ "$picRemoveOld" != "-1" ] ; then
-  find $saveDir -atime $picRemoveOld -delete
+    find $saveDir -atime $picRemoveOld -delete
 fi
 
 # Exit the script
