@@ -1,0 +1,11 @@
+#!/bin/bash
+# file name postinst
+# Post-install script for sddm-bing-pod. Set sddm theme.
+
+if [ ! $(grep -qxF '[Theme]' /etc/sddm.conf) ]; then
+	printf "\n[Theme]\nCurrent=lubuntu-bing-pod" >> /etc/sddm.conf
+elif [ ! $(grep -qxF 'Current=' /etc/sddm.conf) ]; then
+	sed -i "s/Current=.*/Current=lubuntu-bing-pod/g" /etc/sddm.conf
+fi
+
+systemctl enable sddm-bing-pod.service

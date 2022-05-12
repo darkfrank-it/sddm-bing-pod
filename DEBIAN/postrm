@@ -1,0 +1,16 @@
+#!/bin/bash
+# file name postrm
+# Post-removal script for sddm-bing-pod. This remove bing picture under saveDir='/usr/local/share/sddm-bing-pod/'
+# and restore default sddm theme.
+
+saveDir='/usr/local/share/sddm-bing-pod/'
+
+appConfDir=/etc/sddm-bing-pod/
+if [ -f ${appConfDir}settings ] ; then
+  . ${appConfDir}settings
+fi
+
+rm -rf $saveDir
+
+# Reset default theme
+sed -i "s/Current=.*//g" /etc/sddm.conf

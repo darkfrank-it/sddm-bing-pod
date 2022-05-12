@@ -5,7 +5,7 @@ Set Microsoft Bing picture of the day as background of sddm of lubuntu theme.
 Root or sudo permission is needed to install this package.
 
 ~~~bash
-sudo dpkg -i sddm-bing-pod-1.0.2-Linux.deb
+sudo dpkg -i sddm-bing-pod_<version>-<revision>_all.deb
 ~~~
 
 ## Configuration
@@ -33,14 +33,6 @@ Available configuration with example:
 
 `picRes="_1920x1080"`
 
-> The desired size of overlay text
-> Recommend options: "22" "24" "26" "28"
-`pointSize="28"`
-
-> Print to image the copyright information that describe the image
-> Valid options: "true", "false"
-
-`picCopyright=true`
 
 > Remove picture older than $picRemoveOld located into $saveDir
 > Valid options: "-1": never remove, "1" remove 1 day old picture, "2" remove 2 day old picture and so on 
@@ -52,17 +44,20 @@ Available configuration with example:
 sudo sddm-bing-pod
 ~~~
 
-## To run automaticcally at boot (maybe the picture change after sddm init, so you see the new picture at next login):
-~~~bash
-sudo systemctl --now enable sddm-bing-pod.service
-~~~
+## Run automaticcally at boot
+
+The new installation script automatically enable sddm-bing-pod.service
+**Note:** Maybe the picture change after sddm init, so you see the new picture at next login
+
 
 ## Uninstall
 ~~~bash
 sudo apt-get remove sddm-bing-pod
 ~~~
 
-Then you need to download original wall.png and copy to /usr/share/sddm/themes/lubuntu/wall.png with root permission.
-The file must be owned by root to.
+**Note:** Maybe you have to adjust setting in `/etc/sddm.conf`
 
-## TODO
+## CHANGELOG
+
+### v2.0.0-1 
+- Redesigned the process. Now .deb package install a copy of sddm theme "lubuntu" that will be used to show downloaded Bing's picture-of-the-day with it's description (copyright) readed from a file and compose in qml (qt) inside a rectangle with text wrap. It's no more possible to disable the copyright feature, unless you manually copy the Main.qml file from lubuntu theme folder to the lubuntu-bing-pod theme folder inside `/usr/share/sddm/themes/`

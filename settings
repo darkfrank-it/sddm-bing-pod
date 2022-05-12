@@ -14,14 +14,6 @@
 # Valid options: "_1024x768" "_1280x720" "_1366x768" "_1920x1080"
 # picRes="_1920x1080"
 
-# The desired size of overlay text
-# Recommend options: "22" "24" "26" "28"
-# pointSize="28"
-
-# Print to image the copyright information that describe the image
-# Valid options: "true", "false"
-# picCopyright=true
-
 # Remove picture older than $picRemoveOld located into $saveDir
 # Valid options: "-1": never remove, "1" remove 1 day old picture, "2" remove 2 day old picture and so on 
 # picRemoveOld=7

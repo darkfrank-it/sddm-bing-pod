@@ -1,0 +1,5 @@
+#!/bin/bash
+# file name prerm
+# Pre-removal script for sddm-bing-pod. This disable sddm bing pod service.
+
+systemctl disable sddm-bing-pod.service

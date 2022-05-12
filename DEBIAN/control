@@ -1,10 +1,9 @@
-Architecture: all
-Depends: bash, systemd, curl, imagemagick
-Description: Set Microsoft Bing picture of the day as background of sddm of lubuntu theme.
-Homepage: github.com/darkfrank-it/sddm-bing-pod
-Maintainer: github.com/darkfrank-it/sddm-bing-pod
 Package: sddm-bing-pod
+Version: 2.0.0
+Architecture: all
+Maintainer: Nicola Danese
+Depends: bash, systemd, curl
+Homepage: github.com/darkfrank-it/sddm-bing-pod
+Description: Set Microsoft Bing picture of the day as background of sddm of lubuntu theme.
 Priority: optional
 Section: Utility
-Version: 1.0.2
-
