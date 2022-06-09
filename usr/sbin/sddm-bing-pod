@@ -71,8 +71,11 @@ if [ ! -f $saveDir$picName ] ; then
     # Set the sddm wallpaper
     cp -f $saveDir$picName /usr/share/sddm/themes/lubuntu-bing-pod/wall.png
     picDesc=$(echo $xmlFile | grep -oP "<copyright>(.*)</copyright>" | cut -d ">" -f 2 | cut -d "<" -f 1)
+    picHead=$(echo $xmlFile | grep -oP "<headline>(.*)</headline>" | cut -d ">" -f 2 | cut -d "<" -f 1)
     printf "%s" "$picDesc" > $saveDir$picName".txt"
+    printf "%s" "$picHead" > $saveDir$picName"Head.txt"
 	cp $saveDir$picName".txt" /var/opt/sddm-bing-pod/copyright.txt
+	cp $saveDir$picName"Head.txt" /var/opt/sddm-bing-pod/headline.txt
 fi
 
 # Remove pictures older than 7 days

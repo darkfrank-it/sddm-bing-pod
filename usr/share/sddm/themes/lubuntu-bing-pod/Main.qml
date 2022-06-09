@@ -150,6 +150,39 @@ Rectangle {
                     }
                 }
 
+		Text {
+                    id: headMessage
+                    anchors.bottom: parent.bottom;
+                    anchors.bottomMargin: 80
+                    anchors.left: undefined
+        			anchors.right: parent.right
+        			anchors.rightMargin: 20
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    color: "white"
+                    opacity: 0.8
+                    text: "...."
+                    font.pixelSize: 20
+                    font.family: "Ubuntu"
+                    horizontalAlignment: Text.AlignRight
+                    wrapMode: Text.WordWrap
+
+                    function loadTextFile(fileUrl) {
+						var xhr = new XMLHttpRequest;
+						xhr.open("GET", fileUrl);
+						xhr.onreadystatechange = function () {
+							if(xhr.readyState === XMLHttpRequest.DONE) {
+							var response = xhr.responseText;
+							headMessage.text = response
+							}
+						}
+						xhr.send();
+					}
+
+					Component.onCompleted: {
+						loadTextFile("/var/opt/sddm-bing-pod/headline.txt")
+					}
+                }
+
 
 		Text {
                     id: wallMessage
@@ -162,11 +195,11 @@ Rectangle {
                     color: "white"
                     opacity: 0.8
                     text: "...."
-                    font.pixelSize: 18
+                    font.pixelSize: 20
                     font.family: "Ubuntu"
                     horizontalAlignment: Text.AlignRight
                     wrapMode: Text.WordWrap
-                    
+
                     function loadTextFile(fileUrl) {
 						var xhr = new XMLHttpRequest;
 						xhr.open("GET", fileUrl);
